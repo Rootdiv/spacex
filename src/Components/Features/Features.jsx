@@ -17,7 +17,7 @@ const Features = ({ name, height, diameter, mass, payload_weights: payloadWeight
     <div className="overview">
       <table className="table">
         <caption className="table-title">
-            Size
+              Size
         </caption>
         <thead>
           <tr>
