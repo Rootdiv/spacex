@@ -21,6 +21,11 @@
   display: block;
 }
 
+button {
+  background: transparent;
+  cursor: pointer;
+}
+
 .button-back {
   max-width: 200px;
   display: block;
