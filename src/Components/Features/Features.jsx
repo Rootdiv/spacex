@@ -25,26 +25,34 @@ const Features = ({ name, height, diameter, mass, payload_weights: payloadWeight
           <thead>
             <tr>
               <td className="table-column">HEIGHT</td>
-              <td className="table-column">{height.meters} m / {height.feet} ft</td>
+              <td className="table-column">
+                {height.meters.toLocaleString()} m / {height.feet.toLocaleString()} ft
+              </td>
             </tr>
             <tr>
               <td className="table-column">DIAMETER</td>
-              <td className="table-column">{diameter.meters} m / {diameter.feet} ft</td>
+              <td className="table-column">
+                {diameter.meters.toLocaleString()} m / {diameter.feet.toLocaleString()} ft
+              </td>
             </tr>
             <tr>
               <td className="table-column">MASS</td>
-              <td className="table-column">{mass.kg} kg / {mass.lb} lb</td>
+              <td className="table-column">
+                {mass.kg.toLocaleString()} kg / {mass.lb.toLocaleString()} lb
+              </td>
             </tr>
             {payloadWeights.map(item => (
               <tr key={item.id}>
                 <td className="table-column">PAYLOAD TO {item.id.toUpperCase()}</td>
-                <td className="table-column">{item.kg} kg / {item.lb} lb</td>
+                <td className="table-column">
+                  {item.kg.toLocaleString()} kg / {item.lb.toLocaleString()} lb
+                </td>
               </tr>
             ))}
           </thead>
         </table>
         <RelaxWrapper speed={14}>
-          <img src={`./img/${rocketImages[name]}.png`} alt="rocket" className="rocket" />
+          <img src={`../img/${rocketImages[name]}.png`} alt="rocket" className="rocket" />
         </RelaxWrapper>
         <article>
           <h3 className="features-subtitle">DESCRIPTION</h3>

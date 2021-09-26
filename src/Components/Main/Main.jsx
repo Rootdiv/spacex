@@ -13,7 +13,7 @@ const Main = ({ rocket, name }) => (
     <h1 className="title">{rocket || name}</h1>
     <div className="video-container">
       {rocket && <video className="video" autoPlay loop muted
-        src={`./video/${Object.prototype.hasOwnProperty.call(video, rocket) ? video[rocket] : video.other}.mp4`} />}
+        src={`../video/${Object.prototype.hasOwnProperty.call(video, rocket) ? video[rocket] : video.other}.mp4`} />}
     </div>
   </section>
 );

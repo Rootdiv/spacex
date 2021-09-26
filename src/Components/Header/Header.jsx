@@ -12,7 +12,7 @@ const Header = ({ rockets, changeRocket }) => (
       <ul className="list">
         {rockets.map((item, index) => (
           <li key={index} className="item">
-            <Link to="/rocket" onClick={() => changeRocket(item)}
+            <Link to={`/rocket/${item.replace(/\s/, '-').toLowerCase()}`}  onClick={() => changeRocket(item)}
               className="item-link">{item}</Link>
           </li>
         ))}
