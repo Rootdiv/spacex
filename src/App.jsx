@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Header from './Components/Header/Header';
 import Home from './Components/Home/Home';
@@ -9,52 +9,90 @@ import Calendar from './Components/Calendar/Calendar';
 import Details from './Components/Details/Details';
 import './style.css';
 
-class App extends React.Component {
+const fetchData = new FetchData();
 
-  fetchData = new FetchData();
+const App = () => {
 
-  state = {
-    rocket: 'Falcon 1',
-    rocketFeatures: null,
-    rockets: [],
-    company: null,
-  };
+  const [rocket, setRocket] = useState('Falcon 1');
+  const [rocketFeatures, setRocketFeatures] = useState(null);
+  const [rockets, setRockets] = useState([]);
+  const [company, setCompany] = useState(null);
 
-  componentDidMount() {
-    this.updateRocket();
-    this.updateCompany();
-  }
+  useEffect(() => {
 
-  updateRocket() {
-    this.fetchData.getRocket().then(data => {
-      this.setState({ rockets: data.map(item => item.name) });
+    fetchData.getRocket().then(data => {
+      setRockets(data.map(item => item.name));
       return data;
     })
-      .then(data => data.find(item => item.name === this.state.rocket))
-      .then(rocketFeatures => this.setState({ rocketFeatures }));
-  }
+      .then(data => data.find(item => item.name === rocket))
+      .then(rocketFeatures => setRocketFeatures(rocketFeatures));
 
-  changeRocket = rocket => {
-    this.setState({ rocket }, this.updateRocket());
+    fetchData.getCompany().then(company => setCompany(company));
+
+  }, [rocket]);
+
+  const changeRocket = rocket => {
+    setRocket(rocket);
   };
 
-  updateCompany = () => {
-    this.fetchData.getCompany().then(data => this.setState({ company: data }));
-  };
-
-  render() {
-    return (
-      <BrowserRouter>
-        <Header rockets={this.state.rockets} changeRocket={this.changeRocket} />
-        <Route exact path='/' render={() => this.state.company && <Home company={this.state.company} />} />
-        <Route path='/rocket/:rocket'
-          render={() => this.state.rocketFeatures && <Features {...this.state.rocketFeatures} />} />
-        <Route path='/calendar' component={Calendar} />
-        <Route path='/details/:id' component={Details} />
-        {this.state.company && <Footer {...this.state.company} />}
-      </BrowserRouter>
-    );
-  }
-}
+  return (
+    <BrowserRouter>
+      <Header rockets={rockets} changeRocket={changeRocket} />
+      <Route exact path='/' render={() => company && <Home company={company} />} />
+      <Route path='/rocket/:rocket'
+        render={() => rocketFeatures && <Features {...rocketFeatures} />} />
+      <Route path='/calendar' component={Calendar} />
+      <Route path='/details/:id' component={Details} />
+      {company && <Footer {...company} />}
+    </BrowserRouter>
+  );
+};
 
 export default App;
+
+// const App = () => {
+
+//   const [rocket, setRocket] = useState('Falcon 1');
+//   const [rocketFeatures, setRocketFeatures] = useState(null);
+//   const [rockets, setRockets] = useState([]);
+//   const [company, setCompany] = useState(null);
+
+//   const fetchData = React.useMemo(() => new FetchData(), []);
+
+//   const updateRocket = React.useCallback(() => {
+//     fetchData.getRocket().then(data => {
+//       setRockets(data.map(item => item.name));
+//       return data;
+//     })
+//       .then(data => data.find(item => item.name === rocket))
+//       .then(rocketFeatures => setRocketFeatures(rocketFeatures));
+//   }, [fetchData, rocket]
+//   );
+
+//   const changeRocket = rocket => {
+//     setRocket(rocket);
+//   };
+
+//   const updateCompany = React.useCallback(() => {
+//     fetchData.getCompany().then(company => setCompany(company));
+//   }, [fetchData]);
+
+//   useEffect(() => {
+//     updateRocket();
+//     updateCompany();
+//   }, [updateCompany, updateRocket]);
+
+//   return (
+//     <BrowserRouter>
+//       <Header rockets={rockets} changeRocket={changeRocket} />
+//       <Route exact path='/' render={() => company && <Home company={company} />} />
+//       <Route path='/rocket/:rocket'
+//         render={() => rocketFeatures && <Features {...rocketFeatures} />} />
+//       <Route path='/calendar' component={Calendar} />
+//       <Route path='/details/:id' component={Details} />
+//       {company && <Footer {...company} />}
+//     </BrowserRouter>
+//   );
+// };
+
+// export default App;
